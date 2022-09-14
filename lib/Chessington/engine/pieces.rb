@@ -33,6 +33,9 @@ module Chessington
         current_square = board.find_piece(self)
         pawn_direction = (self.player.colour == :white) ? 1 : -1
         moves.push(Square.at(current_square.row + pawn_direction, current_square.column))
+        if (pawn_direction == 1 and current_square.row == 1) or (pawn_direction == -1 and current_square.row == 6) then
+          moves.push(Square.at(current_square.row + pawn_direction*2, current_square.column))
+        end
         return moves
       end
     end
