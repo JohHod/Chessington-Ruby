@@ -43,6 +43,13 @@ module Chessington
         end
         moves = moves.filter{|element| (element.row >=0 and element.row < board.get_board_size)}
 
+        diagonal_directions = [1,-1]
+        diagonal_directions.each {|diagonal_direction|
+          piece = board.get_piece(Square.at(current_square.row+pawn_direction,current_square.column+diagonal_direction))
+          if not piece.nil? and piece.player.colour == self.player.opponent.colour then
+            moves.push(Square.at(current_square.row + pawn_direction, current_square.column + diagonal_direction))
+          end
+        }
         return moves
       end
     end
