@@ -41,6 +41,8 @@ module Chessington
         if board.get_piece(Square.at(current_square.row + pawn_direction, current_square.column)).nil? == false then
           moves = []
         end
+        moves = moves.filter{|element| (element.row >=0 and element.row < board.get_board_size)}
+
         return moves
       end
     end

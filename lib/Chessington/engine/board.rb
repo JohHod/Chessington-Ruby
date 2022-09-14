@@ -18,6 +18,10 @@ module Chessington
         @board = board_state
       end
 
+      def get_board_size
+        return BOARD_SIZE
+      end
+
       def self.empty
         Board.new(Player::WHITE, create_empty_board)
       end
@@ -52,7 +56,11 @@ module Chessington
       ##
       # Retrieves the piece from the given square of the board.
       def get_piece(square)
-        @board[square.row][square.column]
+        if (square.row >= 0 and square.row < BOARD_SIZE) and (square.column >= 0 and square.column < BOARD_SIZE) then
+          return @board[square.row][square.column]
+        else
+          return nil
+        end
       end
 
       ##
