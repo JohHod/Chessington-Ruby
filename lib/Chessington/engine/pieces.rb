@@ -29,7 +29,11 @@ module Chessington
       include Piece
 
       def available_moves(board)
-        []
+        moves = []
+        current_square = board.find_piece(self)
+        pawn_direction = (self.player.colour == :white) ? 1 : -1
+        moves.push(Square.at(current_square.row + pawn_direction, current_square.column))
+        return moves
       end
     end
 
