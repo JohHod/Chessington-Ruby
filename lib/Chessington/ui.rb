@@ -33,7 +33,7 @@ module Chessington
     def create_gui
       @main_window = window {
         title "Chessington"
-        default_size BOARD_SIZE*64, BOARD_SIZE*64 # + 98
+        default_size BOARD_SIZE * 64, BOARD_SIZE * 64 # + 98
 
         box(:vertical) {
           @board = []
@@ -97,20 +97,20 @@ module Chessington
           square = Square.at(row, column)
           board_square = @board[row][column]
           board_square[:box].fill = if square == @from_square
-            [230, 230, 230]
-          elsif @to_squares.include? square
-            [120, 230, 180]
-          else
-            (row + column).even? ? WHITE_SQUARE : BLACK_SQUARE
-          end
+                                      [230, 230, 230]
+                                    elsif @to_squares.include? square
+                                      [120, 230, 180]
+                                    else
+                                      (row + column).even? ? WHITE_SQUARE : BLACK_SQUARE
+                                    end
 
           piece = @game_board.get_piece(square)
           board_square[:piece].fill = if piece.nil?
-            nil
-          else
-            image = Cairo::ImageSurface.from_png("images/#{piece.class.name.downcase.split('::').last}#{piece.player == Player::WHITE ? "w" : "b"}.png")
-            [image]
-          end
+                                        nil
+                                      else
+                                        image = Cairo::ImageSurface.from_png("images/#{piece.class.name.downcase.split('::').last}#{piece.player == Player::WHITE ? "w" : "b"}.png")
+                                        [image]
+                                      end
 
           board_square[:area].queue_draw
         end

@@ -16,6 +16,7 @@ module Chessington
       def initialize(player, board_state)
         @current_player = Player::WHITE
         @board = board_state
+        on_player_changed do end
       end
 
       def on_player_changed(&block)
