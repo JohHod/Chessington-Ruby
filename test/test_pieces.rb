@@ -345,5 +345,82 @@ class TestPieces < Minitest::Test
       refute_includes(moves, Square.at(2, 3))
       refute_includes(moves, Square.at(2, 5))
     end
+
+    def test_white_bishops_on_black_square_can_move_diagonally_one_square
+
+      # Arrange
+      board = Board.empty
+      bishop = Bishop.new(Player::WHITE)
+      bishop_square = Square.at(3,3)
+      board.set_piece(bishop_square, bishop)
+
+      # Act
+      moves = bishop.available_moves(board)
+
+      # Assert
+      assert_includes(moves, Square.at(4,2))
+      assert_includes(moves, Square.at(2,2))
+      assert_includes(moves, Square.at(4,4))
+      assert_includes(moves, Square.at(2,4))
+
+    end
+
+    def test_white_bishops_on_white_square_can_move_diagonally_one_square
+
+      # Arrange
+      board = Board.empty
+      bishop = Bishop.new(Player::WHITE)
+      bishop_square = Square.at(3,4)
+      board.set_piece(bishop_square, bishop)
+
+      # Act
+      moves = bishop.available_moves(board)
+
+      # Assert
+      assert_includes(moves, Square.at(4,3))
+      assert_includes(moves, Square.at(2,3))
+      assert_includes(moves, Square.at(4,5))
+      assert_includes(moves, Square.at(2,5))
+
+    end
+
+    def test_black_bishops_on_black_square_can_move_diagonally_one_square
+
+      # Arrange
+      board = Board.empty
+      bishop = Bishop.new(Player::BLACK)
+      bishop_square = Square.at(3,3)
+      board.set_piece(bishop_square, bishop)
+
+      # Act
+      moves = bishop.available_moves(board)
+
+      # Assert
+      assert_includes(moves, Square.at(4,2))
+      assert_includes(moves, Square.at(2,2))
+      assert_includes(moves, Square.at(4,4))
+      assert_includes(moves, Square.at(2,4))
+
+    end
+
+    def test_black_bishops_on_white_square_can_move_diagonally_one_square
+
+      # Arrange
+      board = Board.empty
+      bishop = Bishop.new(Player::BLACK)
+      bishop_square = Square.at(3,4)
+      board.set_piece(bishop_square, bishop)
+
+      # Act
+      moves = bishop.available_moves(board)
+
+      # Assert
+      assert_includes(moves, Square.at(4,3))
+      assert_includes(moves, Square.at(2,3))
+      assert_includes(moves, Square.at(4,5))
+      assert_includes(moves, Square.at(2,5))
+
+    end
+
   end
 end

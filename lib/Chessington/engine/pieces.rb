@@ -29,6 +29,7 @@ module Chessington
       include Piece
 
       def available_moves(board)
+        #refactor todo
         moves = []
         current_square = board.find_piece(self)
         pawn_direction = (self.player.colour == :white) ? 1 : -1
