@@ -17,8 +17,17 @@ module Chessington
 
     def launch
       @game_board = Chessington::Engine::Board.at_starting_position
+      @game_board.on_player_changed do |text|
+        update_status(text)
+      end
       create_gui
+      # I feel like this shouldn't be hard-coded
+      update_status("White to move...")
       @main_window.show
+    end
+
+    def update_status(text)
+      @main_window.title = "Chessington - #{text}"
     end
 
     def create_gui

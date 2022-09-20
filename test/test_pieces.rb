@@ -422,5 +422,32 @@ class TestPieces < Minitest::Test
 
     end
 
+    def test_white_bishops_can_capture
+
+      # Arrange
+      board = Board.empty
+      bishop = Bishop.new(Player::WHITE)
+      bishop_square = Square.at(3,4)
+      board.set_piece(bishop_square, bishop)
+      enemy1 = Pawn.new(Player::BLACK)
+      enemy1_square = Square.at(1,2)
+      enemy2 = Pawn.new(Player::BLACK)
+      enemy2_square = Square.at(7,0)
+      enemy3 = Pawn.new(Player::BLACK)
+      enemy3_square = Square.at(4,5)
+      board.set_piece(enemy1_square,enemy1)
+      board.set_piece(enemy2_square,enemy2)
+      board.set_piece(enemy3_square,enemy3)
+
+      # Act
+      moves = bishop.available_moves(board)
+
+      # Assert
+      assert_includes(moves, Square.at(1,2))
+      assert_includes(moves, Square.at(7,0))
+      assert_includes(moves, Square.at(4,5))
+
+    end
+
   end
 end

@@ -35,18 +35,18 @@ module Chessington
         pawn_direction = (self.player.colour == :white) ? 1 : -1
         moves.push(Square.at(current_square.row + pawn_direction, current_square.column))
         if (pawn_direction == 1 and current_square.row == 1) or (pawn_direction == -1 and current_square.row == 6) then
-          if board.get_piece(Square.at(current_square.row + pawn_direction*2, current_square.column)).nil? == true then
-            moves.push(Square.at(current_square.row + pawn_direction*2, current_square.column))
+          if board.get_piece(Square.at(current_square.row + pawn_direction * 2, current_square.column)).nil? == true then
+            moves.push(Square.at(current_square.row + pawn_direction * 2, current_square.column))
           end
         end
         if board.get_piece(Square.at(current_square.row + pawn_direction, current_square.column)).nil? == false then
           moves = []
         end
-        moves = moves.filter{|element| (element.row >=0 and element.row < board.get_board_size)}
+        moves = moves.filter { |element| (element.row >= 0 and element.row < board.get_board_size) }
 
-        diagonal_directions = [1,-1]
-        diagonal_directions.each {|diagonal_direction|
-          piece = board.get_piece(Square.at(current_square.row+pawn_direction,current_square.column+diagonal_direction))
+        diagonal_directions = [1, -1]
+        diagonal_directions.each { |diagonal_direction|
+          piece = board.get_piece(Square.at(current_square.row + pawn_direction, current_square.column + diagonal_direction))
           if not piece.nil? and piece.player.colour == self.player.opponent.colour then
             moves.push(Square.at(current_square.row + pawn_direction, current_square.column + diagonal_direction))
           end
@@ -71,7 +71,27 @@ module Chessington
       include Piece
 
       def available_moves(board)
-        []
+        moves = []
+        current_square = board.find_piece(self)
+        directions = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+        directions.each do |direction|
+          (1..7).each do |i|
+            potential_move = Square.at(current_square.row + direction[0] * i, current_square.column + direction[1] * i)
+            # check if there is an opponent piece, and exit adding that piece, or if it is friendly piece, exit without adding the move
+            square_occupant = board.get_piece(potential_move)
+            if square_occupant.nil? then
+              moves.push(potential_move)
+            elsif square_occupant.player.colour == self.player.colour
+              break
+            elsif square_occupant.player.colour == self.player.opponent
+              moves.push(potential_move)
+              break
+            end
+          end
+        end
+
+        moves = moves.filter { |element| (element.row >= 0 and element.row < board.get_board_size and element.column >= 0 and element.column < board.get_board_size) }
+        return moves
       end
     end
 

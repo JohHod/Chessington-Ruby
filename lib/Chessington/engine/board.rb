@@ -18,6 +18,10 @@ module Chessington
         @board = board_state
       end
 
+      def on_player_changed(&block)
+        @on_player_changed = block
+      end
+
       def get_board_size
         return BOARD_SIZE
       end
@@ -84,6 +88,8 @@ module Chessington
           set_piece(to_square, moving_piece)
           set_piece(from_square, nil)
           @current_player = @current_player.opponent
+          # update UI
+          @on_player_changed.call("#{@current_player.colour.capitalize} to move...")
         end
       end
 
