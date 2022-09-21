@@ -21,6 +21,11 @@ module Chessington
         current_square = board.find_piece(self)
         board.move_piece(current_square, new_square)
       end
+
+      def constrain_to_board_squares(board, moves)
+        return moves.filter { |element| (element.row >= 0 and element.row < board.get_board_size and element.column >= 0 and element.column < board.get_board_size) }
+      end
+
     end
 
     ##
@@ -42,7 +47,7 @@ module Chessington
         if board.get_piece(Square.at(current_square.row + pawn_direction, current_square.column)).nil? == false then
           moves = []
         end
-        moves = moves.filter { |element| (element.row >= 0 and element.row < board.get_board_size) }
+        moves = constrain_to_board_squares(board, moves)
 
         diagonal_directions = [1, -1]
         diagonal_directions.each { |diagonal_direction|
@@ -75,22 +80,21 @@ module Chessington
         current_square = board.find_piece(self)
         directions = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
         directions.each do |direction|
-          (1..7).each do |i|
+          (1..board.get_board_size).each do |i|
             potential_move = Square.at(current_square.row + direction[0] * i, current_square.column + direction[1] * i)
             # check if there is an opponent piece, and exit adding that piece, or if it is friendly piece, exit without adding the move
             square_occupant = board.get_piece(potential_move)
-            if square_occupant.nil? then
+            if square_occupant.nil?
               moves.push(potential_move)
             elsif square_occupant.player.colour == self.player.colour
               break
-            elsif square_occupant.player.colour == self.player.opponent
+            elsif square_occupant.player.colour == self.player.opponent.colour
               moves.push(potential_move)
               break
             end
           end
         end
-
-        moves = moves.filter { |element| (element.row >= 0 and element.row < board.get_board_size and element.column >= 0 and element.column < board.get_board_size) }
+        moves = constrain_to_board_squares(board, moves)
         return moves
       end
     end
@@ -101,7 +105,25 @@ module Chessington
       include Piece
 
       def available_moves(board)
-        []
+        moves = []
+        current_square = board.find_piece(self)
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        directions.each do |direction|
+          (1..board.get_board_size).each do |i|
+            potential_move = Square.at(current_square.row + direction[0] * i, current_square.column + direction[1] * i)
+            square_occupant = board.get_piece(potential_move)
+            if square_occupant.nil?
+              moves.push(potential_move)
+            elsif square_occupant.player.colour == self.player.colour
+              break
+            elsif square_occupant.player.colour == self.player.opponent.colour
+              moves.push(potential_move)
+              break
+            end
+          end
+        end
+        moves = constrain_to_board_squares(board, moves)
+        return moves
       end
     end
 
